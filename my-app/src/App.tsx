@@ -2,19 +2,41 @@ import React from "react";
 import './App.css';
 import Timer from './components/timer/Timer';
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <Timer initCounter={0}></Timer>
-      <Timer initCounter={10}></Timer>
-      <Timer initCounter={20}></Timer>
-      <Timer initCounter={30}></Timer>
-      <Timer initCounter={40}></Timer>
-      <div>
-        <button>Reset timers</button>
+const INITIAL_COUNTERS = {
+  initCounters: [0, 10, 20, 30, 40],
+};
+
+type AppState = {
+  initCounters: number[],
+};
+
+class App extends React.Component<{}, AppState> {
+  constructor(props: any) {
+    super(props);
+    this.state = INITIAL_COUNTERS;
+  }
+
+  renderCounters = () => {
+    return this.state.initCounters.map((cnt, i) => 
+      (<Timer key={i} initCounter={cnt}></Timer>));
+  }
+
+  resetCounters =() => {
+    this.setState({ ...INITIAL_COUNTERS });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        {this.renderCounters()}
+        <div>
+          <button onClick={this.resetCounters}>
+            Reset timers
+          </button>
+        </div>
       </div>
-    </div>
-  );
+    )
+  }
 }
 
 export default App;
